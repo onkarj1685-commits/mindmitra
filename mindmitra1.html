@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMitra - Mental Health Support</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .breathing-animation {
+            animation: breathe 4s ease-in-out infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .mood-card:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg">
+    <!-- Login Page -->
+    <div id="loginPage" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl card-shadow p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-white text-2xl">🧠</span>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">MindMitra</h1>
+                <p class="text-gray-600">Your mental wellness companion</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="email" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                           placeholder="Enter your email">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
+                           placeholder="Enter your password">
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-lg font-medium hover:from-purple-600 hover:to-blue-600 transition-all transform hover:scale-105">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Don't have an account? 
+                    <a href="#" class="text-purple-500 hover:text-purple-600 font-medium">Sign up</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comedy Videos/Jokes Page -->
+    <div id="comedyPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromComedy" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Comedy Videos & Jokes</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">😂</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Laughter Therapy</h2>
+                <p class="text-gray-600">Brighten your mood with comedy and jokes!</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Daily Joke</h3>
+                    <div class="bg-yellow-50 p-4 rounded-lg mb-4">
+                        <p class="text-gray-700">"Why don't scientists trust atoms? Because they make up everything!"</p>
+                    </div>
+                    <button class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600">Get New Joke</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Funny Videos</h3>
+                    <div class="bg-gray-100 h-32 rounded-lg flex items-center justify-center mb-4">
+                        <span class="text-gray-500">🎬 Comedy Video Player</span>
+                    </div>
+                    <button class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">Watch Comedy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Relaxation Audio Page -->
+    <div id="relaxationPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromRelaxation" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Relaxation Audio</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🎵</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Peaceful Sounds</h2>
+                <p class="text-gray-600">Relax and unwind with soothing audio</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="text-4xl mb-4">🌊</div>
+                    <h3 class="font-semibold mb-2">Ocean Waves</h3>
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Play</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="text-4xl mb-4">🌧️</div>
+                    <h3 class="font-semibold mb-2">Rain Sounds</h3>
+                    <button class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">Play</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6 text-center">
+                    <div class="text-4xl mb-4">🌲</div>
+                    <h3 class="font-semibold mb-2">Forest Ambience</h3>
+                    <button class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Play</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Motivation Page -->
+    <div id="motivationPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromMotivation" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Motivation</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🚀</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Daily Inspiration</h2>
+                <p class="text-gray-600">Fuel your spirit with motivational content</p>
+            </div>
+            <div class="bg-gradient-to-r from-orange-400 to-pink-500 rounded-xl p-8 text-white text-center mb-6">
+                <h3 class="text-2xl font-bold mb-4">Quote of the Day</h3>
+                <p class="text-xl italic">"The only way to do great work is to love what you do." - Steve Jobs</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Success Stories</h3>
+                    <p class="text-gray-600 mb-4">Read inspiring stories of people who overcame challenges</p>
+                    <button class="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600">Read Stories</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">Goal Setting</h3>
+                    <p class="text-gray-600 mb-4">Set and track your personal development goals</p>
+                    <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600">Set Goals</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quizPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromQuiz" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Mental Health Assessment</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🧩</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Self Assessment</h2>
+                <p class="text-gray-600">Better understand your mental health patterns</p>
+            </div>
+            <div class="bg-white rounded-xl card-shadow p-8">
+                <div id="quizContent">
+                    <h3 class="text-xl font-semibold mb-6">How have you been feeling lately?</h3>
+                    <div class="space-y-4">
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="feeling" class="mr-3">
+                            <span>I've been feeling great and energetic</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="feeling" class="mr-3">
+                            <span>I've been feeling okay, with some ups and downs</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="feeling" class="mr-3">
+                            <span>I've been feeling stressed or anxious</span>
+                        </label>
+                        <label class="flex items-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="feeling" class="mr-3">
+                            <span>I've been feeling down or sad</span>
+                        </label>
+                    </div>
+                    <button class="w-full mt-6 bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600">Next Question</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wellness Guidance Page -->
+    <div id="guidancePage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromGuidance" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Mental Wellness Guidance</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🌱</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Expert Guidance</h2>
+                <p class="text-gray-600">Professional tips for mental wellness</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">🧘‍♀️ Mindfulness</h3>
+                    <p class="text-gray-600 mb-4">Learn mindfulness techniques to stay present and reduce anxiety</p>
+                    <button class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">Learn More</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">😴 Sleep Hygiene</h3>
+                    <p class="text-gray-600 mb-4">Improve your sleep quality for better mental health</p>
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Learn More</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">🏃‍♂️ Exercise</h3>
+                    <p class="text-gray-600 mb-4">Physical activity benefits for mental wellness</p>
+                    <button class="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600">Learn More</button>
+                </div>
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-xl font-semibold mb-4">🤝 Social Connection</h3>
+                    <p class="text-gray-600 mb-4">Building and maintaining healthy relationships</p>
+                    <button class="w-full bg-pink-500 text-white py-2 rounded-lg hover:bg-pink-600">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Problem Solving Page -->
+    <div id="aiPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromAI" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">AI Mental Health Assistant</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">🤖</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">AI Assistant</h2>
+                <p class="text-gray-600">Get personalized mental health support</p>
+            </div>
+            <div class="bg-white rounded-xl card-shadow p-6">
+                <div id="chatMessages" class="h-96 overflow-y-auto mb-4 p-4 bg-gray-50 rounded-lg">
+                    <div class="mb-4">
+                        <div class="bg-indigo-500 text-white p-3 rounded-lg inline-block">
+                            Hello! I'm your AI mental health assistant. How can I help you today?
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" placeholder="Type your message..." 
+                           class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    <button id="sendMessage" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent Dashboard Page -->
+    <div id="parentDashboardPage" class="hidden min-h-screen bg-gray-50">
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromParent" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Parent Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <div class="text-6xl mb-4">👨‍👩‍👧</div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Wellness Overview</h2>
+                <p class="text-gray-600">Quickly log stress level and sleep to monitor wellbeing</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Stress Level Card -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Stress Level</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="parentStress" value="Low" class="mr-3" checked>
+                            <span>Low</span>
+                        </label>
+                        <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <input type="radio" name="parentStress" value="High" class="mr-3">
+                            <span>High</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Sleep Time Card -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Sleep Duration</h3>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Hours slept last night</label>
+                    <input id="parentSleepHours" type="number" min="0" max="24" step="0.1" value="7.5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
+                    <p class="text-xs text-gray-500 mt-2">Tip: Aim for 8 hours for optimal health</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl card-shadow p-6 mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-800">Summary</h4>
+                        <p id="parentSummary" class="text-gray-600 mt-1">Stress: Low • Sleep: 7.5h</p>
+                    </div>
+                    <button id="saveParentMetrics" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Save</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-blue-900 mb-2">Guidance</h3>
+                    <p class="text-sm text-blue-800">If stress is high, consider a short walk, hydration, and 5 minutes of deep breathing. For low sleep, plan for an earlier bedtime and reduced evening screen time.</p>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-green-900 mb-2">Next Best Actions</h3>
+                    <ul class="list-disc pl-5 text-sm text-green-800 space-y-1">
+                        <li>Maintain consistent sleep schedule</li>
+                        <li>Use Relaxation Audio before bed</li>
+                        <li>Check Health Monitoring for trends</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Video Call Section -->
+            <div class="bg-white rounded-xl card-shadow p-6 mt-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Video Call</h3>
+                    <div class="flex gap-2">
+                        <button id="startVideoCallBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Start Video Call</button>
+                        <button id="endVideoCallBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 hidden">End Call</button>
+                    </div>
+                </div>
+                <div id="videoCallArea" class="grid md:grid-cols-2 gap-4 hidden">
+                    <div class="border rounded-lg overflow-hidden bg-black">
+                        <video id="localVideo" autoplay muted playsinline class="w-full h-64 object-cover"></video>
+                    </div>
+                    <div class="border rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center h-64">
+                        <div class="text-center text-gray-600">
+                            <div class="text-4xl mb-2">👤</div>
+                            <p>Waiting for remote participant...</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-3">Note: This demo shows your camera preview. Full video calls require server-side signaling (WebRTC) which isn't configured here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Home Page -->
+    <div id="homePage" class="hidden min-h-screen" style="background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%);">
+        <!-- Header -->
+        <header class="bg-transparent">
+            <div class="px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <button class="p-2 text-white">
+                        <span class="text-xl">☰</span>
+                    </button>
+                    <h1 class="text-xl font-bold text-white">My Wellness Watch</h1>
+                    <div class="flex items-center space-x-2 text-white">
+                        <span class="text-sm">📶</span>
+                        <span class="text-sm">📶</span>
+                        <span class="text-sm">🔋</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="px-4 pb-20">
+            <!-- Wellness Summary Card -->
+            <div class="bg-white rounded-2xl mb-4 overflow-hidden">
+                <div class="flex">
+                    <div class="w-20 h-24 bg-teal-500 flex items-center justify-center">
+                        <div class="text-white text-2xl">⌚</div>
+                    </div>
+                    <div class="flex-1 bg-gradient-to-r from-purple-600 to-blue-700 p-4 text-white">
+                        <div class="space-y-1">
+                            <div class="text-sm">Heart Rate: Normal</div>
+                            <div class="text-sm">Sleep: 7.5 hrs (Good)</div>
+                            <div class="text-sm">Stress: Low</div>
+                        </div>
+                    </div>
+                    <div class="w-12 flex items-center justify-center">
+                        <button class="text-gray-400">
+                            <span class="text-lg">⋮</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Alert Card -->
+            <div class="bg-red-500 rounded-2xl p-4 mb-6 text-white">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-3">
+                        <span class="text-red-500 text-lg">!</span>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium">Important: Sarah's Sleep Patterns Changed</div>
+                        <div class="text-xs opacity-90">Tap to Learn More</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <!-- Comedy Videos -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">🎉</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Comedy Videos</div>
+                </div>
+
+                <!-- Jokes -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">💬</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Jokes</div>
+                </div>
+
+                <!-- Relaxation Audio -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">🎵</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Relaxation Audio</div>
+                </div>
+
+                <!-- Motivation -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">🌊</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Motivation</div>
+                </div>
+
+                <!-- Mental Wellness Guidance -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">📖</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Mental Wellness Guidance</div>
+                </div>
+
+                <!-- AI Chatbot -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">AI Chatbot</div>
+                </div>
+                
+                <!-- Parent Dashboard -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-teal-700 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span class="text-2xl">👨‍👩‍👧</span>
+                    </div>
+                    <div class="text-xs text-white font-medium">Parent Dashboard</div>
+                </div>
+            </div>
+
+            <!-- Health Monitoring Button -->
+            <div class="bg-white rounded-2xl overflow-hidden mb-6">
+                <div class="p-4 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <span class="text-white text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Health Monitoring</h3>
+                    <p class="text-sm text-gray-600 mb-4">Track your health metrics with interactive graphs and analysis</p>
+                    <button onclick="showHealthMonitoringPage()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg hover:from-green-600 hover:to-blue-600 transition-all">
+                        View Health Analytics
+                    </button>
+                </div>
+            </div>
+
+            <!-- Guardian Connect Button -->
+            <div id="guardianConnectCard" class="bg-white rounded-2xl overflow-hidden mb-6">
+                <div class="flex">
+                    <div class="flex-1 bg-teal-500 p-4 text-white">
+                        <div class="flex items-center">
+                            <span class="text-lg mr-2">🛡️</span>
+                            <span class="font-medium">Guardian</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-teal-600 p-4 text-white">
+                        <div class="flex items-center">
+                            <span class="text-lg mr-2">🔗</span>
+                            <span class="font-medium">Connect</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 left-0 right-0 bg-gray-100 border-t">
+            <div class="flex justify-around py-2">
+                <div class="text-center">
+                    <div class="text-lg mb-1">🏠</div>
+                    <div class="text-xs text-blue-600 font-medium">Home</div>
+                </div>
+                <div class="text-center cursor-pointer" onclick="showProfilePage()">
+                    <div class="text-lg mb-1">👤</div>
+                    <div class="text-xs text-gray-600">My Profile</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg mb-1">👥</div>
+                    <div class="text-xs text-gray-600">Social</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg mb-1">📄</div>
+                    <div class="text-xs text-gray-600">Content</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-lg mb-1">➕</div>
+                    <div class="text-xs text-gray-600">Add</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profilePage" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromProfile" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">My Profile</h1>
+                    </div>
+                    <button id="editProfileBtn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <!-- Profile Header -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-6">
+                <div class="flex items-center">
+                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mr-6">
+                        <span class="text-white text-3xl">👤</span>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800" id="profileName">John Doe</h2>
+                        <p class="text-gray-600" id="profileEmail">john.doe@example.com</p>
+                        <div class="flex items-center mt-2">
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Personal Information</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayName">John Doe</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayContact">+91 98765 43210</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Age</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayAge">25 years</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Weight</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayWeight">70 kg</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Height</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayHeight">175 cm</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Education</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayEducation">Bachelor's in Computer Science</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Information -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Location Information</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayCountry">India</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">State</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayState">Maharashtra</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">District</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayDistrict">Pune</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Taluka</label>
+                        <div class="p-3 bg-gray-50 rounded-lg" id="displayTaluka">Pune City</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends List -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold text-gray-800">Friends & Support Network</h3>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+                        Add Friend
+                    </button>
+                </div>
+                <div class="space-y-4" id="friendsList">
+                    <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-blue-600 text-lg">👨</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Alex Johnson</h4>
+                            <p class="text-sm text-gray-600">Best Friend • +91 98765 43211</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-500 hover:text-blue-700">📞</button>
+                            <button class="text-green-500 hover:text-green-700">💬</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-pink-600 text-lg">👩</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Sarah Wilson</h4>
+                            <p class="text-sm text-gray-600">Family • +91 98765 43212</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-500 hover:text-blue-700">📞</button>
+                            <button class="text-green-500 hover:text-green-700">💬</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-purple-600 text-lg">👨</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Mike Chen</h4>
+                            <p class="text-sm text-gray-600">Colleague • +91 98765 43213</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-500 hover:text-blue-700">📞</button>
+                            <button class="text-green-500 hover:text-green-700">💬</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-orange-600 text-lg">👩</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Emma Davis</h4>
+                            <p class="text-sm text-gray-600">Support Group • +91 98765 43214</p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="text-blue-500 hover:text-blue-700">📞</button>
+                            <button class="text-green-500 hover:text-green-700">💬</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Contacts -->
+            <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                <h3 class="text-xl font-semibold text-red-800 mb-4">🚨 Emergency Contacts</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg border border-red-200">
+                        <h4 class="font-medium text-gray-800">Emergency Contact 1</h4>
+                        <p class="text-sm text-gray-600">Dr. Smith - Psychiatrist</p>
+                        <p class="text-sm text-gray-600">+91 98765 43215</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg border border-red-200">
+                        <h4 class="font-medium text-gray-800">Emergency Contact 2</h4>
+                        <p class="text-sm text-gray-600">Mental Health Helpline</p>
+                        <p class="text-sm text-gray-600">+91 98765 43216</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health Monitoring Page -->
+    <div id="healthMonitoringPage" class="hidden min-h-screen bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <button id="backFromHealth" class="mr-4 p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100">
+                            <span class="text-xl">←</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-gray-800">Health Monitoring</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <select id="timeRange" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="7">Last 7 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 3 months</option>
+                        </select>
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                            Export Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Health Overview Cards -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-red-600 text-xl">❤️</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Heart Rate</h3>
+                            <p class="text-2xl font-bold text-gray-800">72 BPM</p>
+                            <p class="text-sm text-green-600">Normal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-blue-600 text-xl">😴</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Sleep</h3>
+                            <p class="text-2xl font-bold text-gray-800">7.5h</p>
+                            <p class="text-sm text-green-600">Good</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-yellow-600 text-xl">😰</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Stress Level</h3>
+                            <p class="text-2xl font-bold text-gray-800">Low</p>
+                            <p class="text-sm text-green-600">Healthy</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-green-600 text-xl">🏃</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Activity</h3>
+                            <p class="text-2xl font-bold text-gray-800">8,500</p>
+                            <p class="text-sm text-green-600">Steps</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Health Metrics -->
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-purple-600 text-xl">📊</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">BMI</h3>
+                            <p class="text-2xl font-bold text-gray-800">22.8</p>
+                            <p class="text-sm text-green-600">Normal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-orange-600 text-xl">🩸</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Blood Pressure</h3>
+                            <p class="text-2xl font-bold text-gray-800">120/80</p>
+                            <p class="text-sm text-green-600">Normal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-cyan-600 text-xl">💧</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Hydration</h3>
+                            <p class="text-2xl font-bold text-gray-800">6/8</p>
+                            <p class="text-sm text-yellow-600">Glasses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-pink-600 text-xl">💊</span>
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-600">Medications</h3>
+                            <p class="text-2xl font-bold text-gray-800">2</p>
+                            <p class="text-sm text-blue-600">Due Today</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                <!-- Heart Rate Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Heart Rate Trend</h3>
+                    <div class="h-64">
+                        <canvas id="heartRateChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Sleep Pattern Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Sleep Pattern Analysis</h3>
+                    <div class="h-64">
+                        <canvas id="sleepChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Stress Level Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Stress Level Tracking</h3>
+                    <div class="h-64">
+                        <canvas id="stressChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Mood Tracking Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Mood Tracking</h3>
+                    <div class="h-64">
+                        <canvas id="moodChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Health Analysis Charts -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                <!-- BMI Tracking Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">BMI Trend Analysis</h3>
+                    <div class="h-64">
+                        <canvas id="bmiChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Blood Pressure Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Blood Pressure Monitoring</h3>
+                    <div class="h-64">
+                        <canvas id="bloodPressureChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Hydration Tracking Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Daily Hydration Tracking</h3>
+                    <div class="h-64">
+                        <canvas id="hydrationChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Medication Compliance Chart -->
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Medication Compliance</h3>
+                    <div class="h-64">
+                        <canvas id="medicationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Tracking -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Activity & Exercise Tracking</h3>
+                <div class="h-80">
+                    <canvas id="activityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Health Analysis Options -->
+            <div class="bg-white rounded-xl card-shadow p-6 mb-8">
+                <h3 class="text-xl font-semibold text-gray-800 mb-6">🔬 Advanced Health Analysis Options</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-blue-600 text-2xl">📈</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Trend Analysis</h4>
+                        <p class="text-sm text-gray-600">Analyze health trends over time</p>
+                    </div>
+                    <div class="text-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-green-600 text-2xl">🎯</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">Risk Assessment</h4>
+                        <p class="text-sm text-gray-600">Evaluate health risk factors</p>
+                    </div>
+                    <div class="text-center p-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-purple-600 text-2xl">🧠</span>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">AI Insights</h4>
+                        <p class="text-sm text-gray-600">Get AI-powered health recommendations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Insights & Recommendations -->
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                    <h3 class="text-xl font-semibold mb-4">📊 Health Insights</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-green-300 rounded-full mr-3"></span>
+                            Your heart rate is within normal range
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-green-300 rounded-full mr-3"></span>
+                            Sleep quality has improved this week
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-yellow-300 rounded-full mr-3"></span>
+                            Consider increasing daily activity
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-green-300 rounded-full mr-3"></span>
+                            Stress levels are well managed
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-yellow-300 rounded-full mr-3"></span>
+                            Hydration levels need improvement
+                        </li>
+                        <li class="flex items-center">
+                            <span class="w-2 h-2 bg-green-300 rounded-full mr-3"></span>
+                            BMI is in healthy range
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">🎯 Health Goals</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Daily Steps</span>
+                                <span class="text-sm text-gray-600">8,500 / 10,000</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Sleep Hours</span>
+                                <span class="text-sm text-gray-600">7.5 / 8</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Water Intake</span>
+                                <span class="text-sm text-gray-600">6 / 8 glasses</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-400 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Medication Compliance</span>
+                                <span class="text-sm text-gray-600">95%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Recommendations -->
+            <div class="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl p-6 text-white mb-8">
+                <h3 class="text-xl font-semibold mb-4">💡 Personalized Health Recommendations</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-semibold mb-3">Immediate Actions</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• Increase water intake by 2 glasses daily</li>
+                            <li>• Take a 10-minute walk every 2 hours</li>
+                            <li>• Practice 5 minutes of deep breathing</li>
+                            <li>• Take your evening medication at 8 PM</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-3">Weekly Goals</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li>• Aim for 10,000 steps daily</li>
+                            <li>• Maintain 8 hours of sleep consistently</li>
+                            <li>• Schedule 30 minutes of exercise 3x/week</li>
+                            <li>• Monitor blood pressure twice daily</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medication Reminder Section -->
+            <div class="bg-white rounded-xl card-shadow p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">💊 Medication Reminders</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 border rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-blue-600 text-lg">💊</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Vitamin D</h4>
+                                <p class="text-sm text-gray-600">1000 IU daily</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-600">Next dose</p>
+                            <p class="font-semibold text-gray-800">8:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-4 border rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-green-600 text-lg">💊</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-800">Omega-3</h4>
+                                <p class="text-sm text-gray-600">1000mg daily</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-600">Next dose</p>
+                            <p class="font-semibold text-gray-800">8:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // Hide login page and show home page
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('homePage').classList.remove('hidden');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+        });
+
+        // Mood selection functionality
+        document.querySelectorAll('.mood-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove previous selection
+                document.querySelectorAll('.mood-card').forEach(c => {
+                    c.classList.remove('border-purple-500', 'bg-purple-100');
+                    c.classList.add('border-gray-200');
+                });
+                
+                // Add selection to clicked card
+                this.classList.remove('border-gray-200');
+                this.classList.add('border-purple-500', 'bg-purple-100');
+                
+                // Show confirmation message
+                const moodText = this.querySelector('div:last-child').textContent;
+                alert(`Mood logged: ${moodText}. Thank you for checking in!`);
+            });
+        });
+
+        // Feature button functionality for new home page design
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for feature grid items
+            const featureItems = document.querySelectorAll('#homePage .grid > div');
+            featureItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const featureText = this.querySelector('.text-xs').textContent;
+                    
+                    // Hide home page
+                    document.getElementById('homePage').classList.add('hidden');
+                    
+                    // Show appropriate page based on feature text
+                    if (featureText === 'Comedy Videos') {
+                        document.getElementById('comedyPage').classList.remove('hidden');
+                    } else if (featureText === 'Relaxation Audio') {
+                        document.getElementById('relaxationPage').classList.remove('hidden');
+                    } else if (featureText === 'Motivation') {
+                        document.getElementById('motivationPage').classList.remove('hidden');
+                    } else if (featureText === 'Mental Wellness Guidance') {
+                        document.getElementById('guidancePage').classList.remove('hidden');
+                    } else if (featureText === 'AI Chatbot') {
+                        document.getElementById('aiPage').classList.remove('hidden');
+                    } else if (featureText === 'Jokes') {
+                        document.getElementById('comedyPage').classList.remove('hidden');
+                    } else if (featureText === 'Parent Dashboard') {
+                        document.getElementById('parentDashboardPage').classList.remove('hidden');
+                    } else {
+                        alert(`${featureText} feature coming soon!`);
+                    }
+                });
+            });
+
+            // Add click handler for Guardian Connect button -> open Parent Dashboard
+            const guardianButton = document.getElementById('guardianConnectCard');
+            if (guardianButton) {
+                guardianButton.addEventListener('click', function() {
+                    document.getElementById('homePage').classList.add('hidden');
+                    document.getElementById('parentDashboardPage').classList.remove('hidden');
+                });
+            }
+
+            // Add click handler for alert card
+            const alertCard = document.querySelector('#homePage .bg-red-500');
+            if (alertCard) {
+                alertCard.addEventListener('click', function() {
+                    alert('Sleep pattern analysis: Your sleep patterns have changed recently. Consider maintaining a consistent sleep schedule and reducing screen time before bed.');
+                });
+            }
+        });
+
+        // Legacy feature button functionality (for any remaining buttons)
+        document.querySelectorAll('button[class*="bg-"]').forEach(button => {
+            if (!button.id && button.textContent !== 'Sign In' && button.textContent !== 'Logout') {
+                button.addEventListener('click', function() {
+                    const feature = this.textContent;
+                    
+                    // Hide home page
+                    document.getElementById('homePage').classList.add('hidden');
+                    
+                    // Show appropriate page based on button text
+                    if (feature === 'Watch Comedy') {
+                        document.getElementById('comedyPage').classList.remove('hidden');
+                    } else if (feature === 'Listen Now') {
+                        document.getElementById('relaxationPage').classList.remove('hidden');
+                    } else if (feature === 'Get Motivated') {
+                        document.getElementById('motivationPage').classList.remove('hidden');
+                    } else if (feature === 'Take Quiz') {
+                        document.getElementById('quizPage').classList.remove('hidden');
+                    } else if (feature === 'Get Guidance') {
+                        document.getElementById('guidancePage').classList.remove('hidden');
+                    } else if (feature === 'Chat with AI') {
+                        document.getElementById('aiPage').classList.remove('hidden');
+                    } else {
+                        alert(`${feature} feature coming soon! This would open the ${feature.toLowerCase()} module.`);
+                    }
+                });
+            }
+        });
+
+        // Back button functionality
+        document.getElementById('backFromComedy').addEventListener('click', function() {
+            document.getElementById('comedyPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        document.getElementById('backFromRelaxation').addEventListener('click', function() {
+            document.getElementById('relaxationPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        document.getElementById('backFromMotivation').addEventListener('click', function() {
+            document.getElementById('motivationPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        document.getElementById('backFromQuiz').addEventListener('click', function() {
+            document.getElementById('quizPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        document.getElementById('backFromGuidance').addEventListener('click', function() {
+            document.getElementById('guidancePage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        document.getElementById('backFromAI').addEventListener('click', function() {
+            document.getElementById('aiPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        // Back from Parent Dashboard
+        document.getElementById('backFromParent').addEventListener('click', function() {
+            document.getElementById('parentDashboardPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        // Parent Dashboard logic
+        function updateParentSummary() {
+            const stress = (document.querySelector('input[name="parentStress"]:checked') || {}).value || 'Low';
+            const sleep = parseFloat(document.getElementById('parentSleepHours').value || '0');
+            document.getElementById('parentSummary').textContent = `Stress: ${stress} • Sleep: ${sleep}h`;
+        }
+
+        document.addEventListener('change', function(e) {
+            if (e.target && (e.target.name === 'parentStress' || e.target.id === 'parentSleepHours')) {
+                updateParentSummary();
+            }
+        });
+
+        document.getElementById('saveParentMetrics').addEventListener('click', function() {
+            const stress = (document.querySelector('input[name="parentStress"]:checked') || {}).value || 'Low';
+            const sleep = parseFloat(document.getElementById('parentSleepHours').value || '0');
+            try {
+                localStorage.setItem('parentDashboardMetrics', JSON.stringify({ stress, sleep, ts: Date.now() }));
+            } catch (e) {}
+            alert(`Saved: Stress ${stress}, Sleep ${sleep}h`);
+        });
+
+        // Simple video call preview (local camera only)
+        let parentCallStream = null;
+        const startBtn = document.getElementById('startVideoCallBtn');
+        const endBtn = document.getElementById('endVideoCallBtn');
+        const localVideo = document.getElementById('localVideo');
+        const videoArea = document.getElementById('videoCallArea');
+
+        async function startParentVideoCall() {
+            try {
+                parentCallStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                if (localVideo) {
+                    localVideo.srcObject = parentCallStream;
+                }
+                if (videoArea) videoArea.classList.remove('hidden');
+                if (startBtn) startBtn.classList.add('hidden');
+                if (endBtn) endBtn.classList.remove('hidden');
+            } catch (err) {
+                alert('Unable to access camera/microphone. Please check permissions.');
+            }
+        }
+
+        function endParentVideoCall() {
+            if (parentCallStream) {
+                parentCallStream.getTracks().forEach(t => t.stop());
+                parentCallStream = null;
+            }
+            if (localVideo) localVideo.srcObject = null;
+            if (videoArea) videoArea.classList.add('hidden');
+            if (startBtn) startBtn.classList.remove('hidden');
+            if (endBtn) endBtn.classList.add('hidden');
+        }
+
+        if (startBtn) startBtn.addEventListener('click', startParentVideoCall);
+        if (endBtn) endBtn.addEventListener('click', endParentVideoCall);
+
+        // AI Chat functionality
+        document.getElementById('sendMessage').addEventListener('click', function() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                const chatMessages = document.getElementById('chatMessages');
+                
+                // Add user message
+                const userDiv = document.createElement('div');
+                userDiv.className = 'mb-4 text-right';
+                userDiv.innerHTML = `<div class="bg-gray-300 text-gray-800 p-3 rounded-lg inline-block">${message}</div>`;
+                chatMessages.appendChild(userDiv);
+                
+                // Add AI response
+                setTimeout(() => {
+                    const aiDiv = document.createElement('div');
+                    aiDiv.className = 'mb-4';
+                    aiDiv.innerHTML = `<div class="bg-indigo-500 text-white p-3 rounded-lg inline-block">I understand you're dealing with ${message.toLowerCase()}. Here are some strategies that might help...</div>`;
+                    chatMessages.appendChild(aiDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+                
+                input.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+
+        // Enter key for chat
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('sendMessage').click();
+            }
+        });
+
+        // Profile page functionality
+        function showProfilePage() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('profilePage').classList.remove('hidden');
+        }
+
+        // Back button from profile
+        document.getElementById('backFromProfile').addEventListener('click', function() {
+            document.getElementById('profilePage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        // Edit profile functionality
+        document.getElementById('editProfileBtn').addEventListener('click', function() {
+            const currentName = document.getElementById('displayName').textContent;
+            const currentContact = document.getElementById('displayContact').textContent;
+            const currentAge = document.getElementById('displayAge').textContent;
+            const currentWeight = document.getElementById('displayWeight').textContent;
+            const currentHeight = document.getElementById('displayHeight').textContent;
+            const currentEducation = document.getElementById('displayEducation').textContent;
+            const currentCountry = document.getElementById('displayCountry').textContent;
+            const currentState = document.getElementById('displayState').textContent;
+            const currentDistrict = document.getElementById('displayDistrict').textContent;
+            const currentTaluka = document.getElementById('displayTaluka').textContent;
+
+            const newName = prompt('Enter your full name:', currentName);
+            const newContact = prompt('Enter your contact number:', currentContact);
+            const newAge = prompt('Enter your age:', currentAge);
+            const newWeight = prompt('Enter your weight:', currentWeight);
+            const newHeight = prompt('Enter your height:', currentHeight);
+            const newEducation = prompt('Enter your education:', currentEducation);
+            const newCountry = prompt('Enter your country:', currentCountry);
+            const newState = prompt('Enter your state:', currentState);
+            const newDistrict = prompt('Enter your district:', currentDistrict);
+            const newTaluka = prompt('Enter your taluka:', currentTaluka);
+
+            if (newName) {
+                document.getElementById('displayName').textContent = newName;
+                document.getElementById('profileName').textContent = newName;
+            }
+            if (newContact) document.getElementById('displayContact').textContent = newContact;
+            if (newAge) document.getElementById('displayAge').textContent = newAge;
+            if (newWeight) document.getElementById('displayWeight').textContent = newWeight;
+            if (newHeight) document.getElementById('displayHeight').textContent = newHeight;
+            if (newEducation) document.getElementById('displayEducation').textContent = newEducation;
+            if (newCountry) document.getElementById('displayCountry').textContent = newCountry;
+            if (newState) document.getElementById('displayState').textContent = newState;
+            if (newDistrict) document.getElementById('displayDistrict').textContent = newDistrict;
+            if (newTaluka) document.getElementById('displayTaluka').textContent = newTaluka;
+
+            alert('Profile updated successfully!');
+        });
+
+        // Add friend functionality
+        document.querySelector('#profilePage .bg-green-500').addEventListener('click', function() {
+            const friendName = prompt('Enter friend\'s name:');
+            const friendContact = prompt('Enter friend\'s contact number:');
+            const friendRelation = prompt('Enter relationship (e.g., Best Friend, Family, Colleague):');
+
+            if (friendName && friendContact && friendRelation) {
+                const friendsList = document.getElementById('friendsList');
+                const newFriend = document.createElement('div');
+                newFriend.className = 'flex items-center p-4 border rounded-lg hover:bg-gray-50';
+                newFriend.innerHTML = `
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                        <span class="text-green-600 text-lg">👤</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-medium text-gray-800">${friendName}</h4>
+                        <p class="text-sm text-gray-600">${friendRelation} • ${friendContact}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-500 hover:text-blue-700">📞</button>
+                        <button class="text-green-500 hover:text-green-700">💬</button>
+                    </div>
+                `;
+                friendsList.appendChild(newFriend);
+                alert('Friend added successfully!');
+            }
+        });
+
+        // Call and message functionality for friends
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === '📞') {
+                alert('Calling... This would initiate a phone call.');
+            } else if (e.target.textContent === '💬') {
+                alert('Opening chat... This would open a messaging interface.');
+            }
+        });
+
+        // Health Monitoring Page functionality
+        function showHealthMonitoringPage() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('healthMonitoringPage').classList.remove('hidden');
+            initializeCharts();
+        }
+
+        // Back button from health monitoring
+        document.getElementById('backFromHealth').addEventListener('click', function() {
+            document.getElementById('healthMonitoringPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        });
+
+        // Initialize all charts
+        function initializeCharts() {
+            // Heart Rate Chart
+            const heartRateCtx = document.getElementById('heartRateChart').getContext('2d');
+            new Chart(heartRateCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Heart Rate (BPM)',
+                        data: [68, 72, 70, 75, 73, 69, 71],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 60,
+                            max: 80
+                        }
+                    }
+                }
+            });
+
+            // Sleep Pattern Chart
+            const sleepCtx = document.getElementById('sleepChart').getContext('2d');
+            new Chart(sleepCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Sleep Hours',
+                        data: [7.5, 8.0, 7.2, 8.5, 7.8, 9.0, 8.2],
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#1d4ed8',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    }
+                }
+            });
+
+            // Stress Level Chart
+            const stressCtx = document.getElementById('stressChart').getContext('2d');
+            new Chart(stressCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Low', 'Medium', 'High'],
+                    datasets: [{
+                        data: [70, 25, 5],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Mood Tracking Chart
+            const moodCtx = document.getElementById('moodChart').getContext('2d');
+            new Chart(moodCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Happy', 'Calm', 'Energetic', 'Focused', 'Relaxed', 'Motivated'],
+                    datasets: [{
+                        label: 'Current Week',
+                        data: [8, 7, 6, 8, 7, 6],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        borderWidth: 2
+                    }, {
+                        label: 'Last Week',
+                        data: [6, 5, 7, 6, 5, 7],
+                        borderColor: '#06b6d4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.2)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    }
+                }
+            });
+
+            // Activity Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Steps',
+                        data: [45000, 52000, 48000, 55000],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y'
+                    }, {
+                        label: 'Exercise (minutes)',
+                        data: [120, 150, 135, 180],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Steps'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Exercise (minutes)'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+
+            // BMI Chart
+            const bmiCtx = document.getElementById('bmiChart').getContext('2d');
+            new Chart(bmiCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'BMI',
+                        data: [23.2, 23.0, 22.8, 22.9, 22.7, 22.8],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 20,
+                            max: 25
+                        }
+                    }
+                }
+            });
+
+            // Blood Pressure Chart
+            const bloodPressureCtx = document.getElementById('bloodPressureChart').getContext('2d');
+            new Chart(bloodPressureCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Systolic',
+                        data: [120, 118, 122, 119, 121, 120, 119],
+                        borderColor: '#ef4444',
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }, {
+                        label: 'Diastolic',
+                        data: [80, 78, 82, 79, 81, 80, 79],
+                        borderColor: '#f59e0b',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 70,
+                            max: 130
+                        }
+                    }
+                }
+            });
+
+            // Hydration Chart
+            const hydrationCtx = document.getElementById('hydrationChart').getContext('2d');
+            new Chart(hydrationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Glasses of Water',
+                        data: [6, 7, 5, 8, 6, 7, 6],
+                        backgroundColor: '#06b6d4',
+                        borderColor: '#0891b2',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10
+                        }
+                    }
+                }
+            });
+
+            // Medication Chart
+            const medicationCtx = document.getElementById('medicationChart').getContext('2d');
+            new Chart(medicationCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Taken', 'Missed', 'Pending'],
+                    datasets: [{
+                        data: [95, 3, 2],
+                        backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Time range selector functionality
+        document.getElementById('timeRange').addEventListener('change', function() {
+            const selectedRange = this.value;
+            alert(`Data updated for last ${selectedRange} days`);
+            // In a real application, this would refresh the charts with new data
+        });
+
+        // Health analysis options functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Trend Analysis
+            document.querySelector('.grid.md\\:grid-cols-3 .cursor-pointer:nth-child(1)').addEventListener('click', function() {
+                alert('Trend Analysis: Your health metrics show positive trends over the last 30 days. Heart rate is stable, sleep quality is improving, and stress levels are decreasing.');
+            });
+
+            // Risk Assessment
+            document.querySelector('.grid.md\\:grid-cols-3 .cursor-pointer:nth-child(2)').addEventListener('click', function() {
+                alert('Risk Assessment: Low risk profile detected. All major health indicators are within normal ranges. Continue maintaining current lifestyle habits.');
+            });
+
+            // AI Insights
+            document.querySelector('.grid.md\\:grid-cols-3 .cursor-pointer:nth-child(3)').addEventListener('click', function() {
+                alert('AI Insights: Based on your data patterns, our AI recommends increasing hydration, maintaining consistent sleep schedule, and adding 15 minutes of daily meditation for optimal health.');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f2046740026ebe',t:'MTc1Nzg3NTI3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
